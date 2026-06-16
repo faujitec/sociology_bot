@@ -1,22 +1,57 @@
 TOPICS = {
+
     "caste": [
         "caste",
         "reservation",
         "dalit",
-        "jati",
-        "varna"
+        "scheduled caste",
+        "varna",
+        "jati"
+    ],
+
+    "tribe": [
+        "tribal",
+        "tribe",
+        "adivasi",
+        "forest rights"
     ],
 
     "gender": [
         "women",
         "gender",
-        "patriarchy",
-        "feminism"
+        "feminism",
+        "patriarchy"
     ],
 
     "migration": [
         "migration",
         "migrant",
         "urbanization"
+    ],
+
+    "poverty": [
+        "poverty",
+        "inequality",
+        "deprivation"
+    ],
+
+    "education": [
+        "education",
+        "school",
+        "university",
+        "literacy"
+    ],
+
+    "religion": [
+        "religion",
+        "religious",
+        "communal",
+        "minority"
+    ],
+
+    "health": [
+        "health",
+        "mental health",
+        "public health"
     ]
 }
