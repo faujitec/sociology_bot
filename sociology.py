@@ -1,12 +1,18 @@
 import feedparser
 
 from rss_sources import RSS_FEEDS
-from topics import TOPICS
+from taxonomy import TOPICS
 from telegram_sender import send_message
+
+from gemini_client import analyze_article
+from prompt_templates import SOCIOLOGY_PROMPT
 
 articles = []
 
-# Fetch news
+# ------------------------
+# FETCH ARTICLES
+# ------------------------
+
 for feed_url in RSS_FEEDS:
 
     feed = feedparser.parse(feed_url)
@@ -19,7 +25,10 @@ for feed_url in RSS_FEEDS:
             "link": item.link
         })
 
-# Score articles
+# ------------------------
+# SCORE ARTICLES
+# ------------------------
+
 matches = []
 
 for article in articles:
@@ -32,46 +41,86 @@ for article in articles:
 
     score = 0
 
+    matched_topics = []
+
     for topic, keywords in TOPICS.items():
+
+        topic_score = 0
 
         for keyword in keywords:
 
-            if keyword in text:
-                score += 1
+            if keyword.lower() in text:
+
+                topic_score += 1
+
+        if topic_score > 0:
+
+            matched_topics.append(topic)
+
+            score += topic_score * 10
 
     if score > 0:
-        matches.append(
-            (score, article)
-        )
 
-# Sort
+        matches.append({
+            "score": score,
+            "topics": matched_topics,
+            "article": article
+        })
+
+# ------------------------
+# SORT ARTICLES
+# ------------------------
+
 matches.sort(
-    key=lambda x: x[0],
+    key=lambda x: x["score"],
     reverse=True
 )
 
-# Best article
-if matches:
+# ------------------------
+# NO ARTICLES FOUND
+# ------------------------
 
-    score, best = matches[0]
-
-    message = f"""
-📚 Sociology Daily Insight
-
-📰 News:
-{best['title']}
-
-🔗 Source:
-{best['link']}
-
-📊 Relevance Score:
-{score}
-"""
-
-    send_message(message)
-
-else:
+if not matches:
 
     send_message(
-        "No sociology article found today."
+        "No sociology-related article found today."
     )
+
+    raise SystemExit()
+
+# ------------------------
+# BEST ARTICLE
+# ------------------------
+
+best = matches[0]
+
+article = best["article"]
+
+print("Selected Article:")
+print(article["title"])
+
+# ------------------------
+# GEMINI ANALYSIS
+# ------------------------
+
+prompt = SOCIOLOGY_PROMPT.format(
+    title=article["title"],
+    summary=article["summary"]
+)
+
+analysis = analyze_article(prompt)
+
+# ------------------------
+# TELEGRAM MESSAGE
+# ------------------------
+
+message = f"""
+{analysis}
+
+🔗 Source:
+{article['link']}
+"""
+
+send_message(message)
+
+print("Telegram post sent.")
