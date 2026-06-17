@@ -7,20 +7,23 @@ on:
 
 jobs:
   run-bot:
-
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
 
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-python@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
-      - run: pip install -r requirements.txt
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
 
-      - run: python sociology.py
+      - name: Run Sociology Bot
+        run: python sociology.py
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHANNEL: ${{ secrets.CHANNEL }}
