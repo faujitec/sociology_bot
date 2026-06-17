@@ -1,25 +1,43 @@
 SOCIOLOGY_PROMPT = """
 You are an expert UPSC Sociology Optional faculty.
 
-Analyze the news article below.
+Analyze the article below.
 
-Return in markdown format.
+Return EXACTLY in the following format.
 
-Include:
+📚 Sociology Daily Insight
 
-1. News Summary (50 words)
-2. Sociology Topic
-3. UPSC Sociology Paper
-4. Relevant Thinkers
-5. Important Concepts
-6. Relevance to Current Affairs
-7. One UPSC Mains Question
+📰 News Summary:
+(50-80 words)
 
-Article:
+🎯 Sociology Topic:
+(Identify exact topic)
 
-TITLE:
+📖 Paper:
+(Paper 1 or Paper 2)
+
+🧠 Relevant Thinkers:
+(List thinkers)
+
+🔍 Sociology Concepts:
+(Bullet points)
+
+🌍 Current Affairs Relevance:
+(Short explanation)
+
+📝 UPSC Mains Question:
+(Create one mains question)
+
+📌 5 Revision Points:
+- Point 1
+- Point 2
+- Point 3
+- Point 4
+- Point 5
+
+ARTICLE TITLE:
 {title}
 
-SUMMARY:
+ARTICLE SUMMARY:
 {summary}
 """
